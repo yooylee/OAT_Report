@@ -2,7 +2,7 @@
 
 # 2. Load your file
 
-OATData <- read.csv(YourFileName.csv, header = TRUE)
+OATData <- read.csv("YourFileName.csv", header = TRUE)
 
 # 3. Libraries
 library(plyr)
@@ -26,6 +26,9 @@ outcome # This will give you the total number of completed items by Outcome valu
 first_email <- OATData[ which(!(is.na(OATData$`1st Email`))), ]
 first_email_total <- nrow(first_email)
 
+### Of the email notification filters, this first is the most important. All subsequent requests filter results from the first set.
+### Note: exports from OAT may rename vectors, so '1st Email' may be something else, such as 'X1st.email'
+
 second_email <- first_email[ which(!(is.na(first_email$`2nd Email`))), ]
 second_email_total <- nrow(second_email)
 
@@ -43,8 +46,14 @@ Medicine <- OATData[ which(OATData$Department=="Department of Medicine, School o
 
 ### Then apply same logic above to count the total number of completed items, 
 ### the total number of completed items by Outcome value and the total number of notifications sent
+### To apply logic: rename variables accordingly ... so, for outcomes in Medicine
+### completed items must be renamed completed_items_Medicine (to prevent over-writing)
+### likewsie, OATData must be replaced with Medicine etc.
 
 # 6. Time range
 
 ### If you want to do withim time ranges, apply another condition like this:
 time_ranges <- subset(completed_items, `1st Email` > "2017-05-30" & `1st Email` < "2017-06-13")
+
+### I think I have to create the subset before running the time_ranges,
+### for example, must create completed_items_Medicine before focussing on a range.
